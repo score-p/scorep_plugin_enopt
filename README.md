@@ -97,7 +97,7 @@ The events available on the system are:
 37. ENOPT_POWER_AC - Provides power measured on AC counter.
 
 To add a kernel event counter to your profile or trace, you have to specify the environment variables
-`SCOREP_METRIC_PLUGINS` and `SCOREP_METRIC_ENOPT_PLUGIN` or use the Periscope Tuning Framework.
+`SCOREP_METRIC_PLUGINS` and `SCOREP_METRIC_ENOPTMP` or use the Periscope Tuning Framework.
 
 Load the metric plugin library:
 
@@ -105,7 +105,7 @@ Load the metric plugin library:
 
 E.g.
 
-    export SCOREP_METRIC_ENOPTMP_PLUGIN="ENOPT_ALL_CORES"
+    export SCOREP_METRIC_ENOPTMP="ENOPT_ALL_CORES"
 
 Experienced `libEnoptMP` users may enable debug output by setting the environment
 variable `ENOPT_ENABLE_DEBUG_OUTPUT` to 1.

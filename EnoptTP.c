@@ -16,20 +16,22 @@
  * @brief Metric plugin implementation.
  */
 
-#include "Shared.h"
-#include <enoptC.h>
+
 #include <scorep/SCOREP_TuningPlugins.h>
 #include <scorep/SCOREP_TuningTypes.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <enoptC.h>
 
-
+#include "Shared.h"
 
 static void scorep_enopt_set_frequency( int new_setting, int* old_setting )
 {
-    debug_printf( "EnoptTP: %s: Changing frequency from %d to %d\n", __func__, *old_setting, new_setting );
+    debug_printf( "EnoptTP: %s: Changing frequency from %d to %d\n",
+                  __func__, *old_setting, new_setting );
     static int last_frequency = 7;
 
     *old_setting   = last_frequency;
@@ -38,9 +40,10 @@ static void scorep_enopt_set_frequency( int new_setting, int* old_setting )
 }
 
 
-static void scorep_enopt_set_governor( int new_setting,int* old_setting )
+static void scorep_enopt_set_governor( int new_setting, int* old_setting )
 {
-    debug_printf( "EnoptTP: %s: Changing governor from %d to %d\n", __func__, *old_setting, new_setting );
+    debug_printf( "EnoptTP: %s: Changing governor from %d to %d\n",
+                  __func__, *old_setting, new_setting );
     static int last_governor = 2;
 
     *old_setting  = last_governor;
@@ -134,7 +137,6 @@ static SCOREP_Tuning_Action_Info return_values[] =
 int32_t init( void )
 {
     debug_printf( "EnoptTP: %s: Entering\n", __func__ );
-
     if( init_enopt_wrapper() != 0 )
     {
         printf( "EnoptTP: %s: Unable to initialize enopt metric source\n", __func__ );

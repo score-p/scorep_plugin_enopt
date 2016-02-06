@@ -11,16 +11,19 @@
  */
 
 
-#include "Shared.h"
 #include <scorep/SCOREP_MetricPlugins.h>
-#include <omp.h>
-#include <enoptC.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#include <omp.h>
+
 #include <defines.h>
+#include <enoptC.h>
+
 #include "EnoptMP.h"
+#include "Shared.h"
 
 
 /* Maximum number of metrics */
@@ -31,8 +34,6 @@ static pthread_mutex_t add_metric_mutex;
 
 /* Number of individual metrics */
 static int32_t num_metrics = 0;
-
-
 
 
 int32_t init( void )
@@ -135,11 +136,11 @@ uint64_t get_value( int32_t counterIndex )
         {
             case 0:
                 debug_printf( "EnoptMP: %s: enopt_get: Successfully accessed to ENOPT %s measurement!\n",
-                         __func__, scorep_enopt_metric[ counterIndex ].name );
+                              __func__, scorep_enopt_metric[ counterIndex ].name );
                 break;
             case -1:
                 printf( "EnoptMP: %s: enopt_get: Could not get ENOPT %s measurement!\n",
-                        __func__, scorep_enopt_metric[ counterIndex ].name );
+                         __func__, scorep_enopt_metric[ counterIndex ].name );
                 abort();
             case -2:
                 printf( "EnoptMP: %s: enopt_get: Not allowed to access ENOPT %s measurement!\n",
@@ -154,8 +155,8 @@ uint64_t get_value( int32_t counterIndex )
         energy *= 1e09;
         scorep_enopt_metric[ counterIndex ].value += ( uint64_t ) energy; 
         debug_printf( "EnoptMP: %s(%d) accumulated with enopt_id(%d) = %llu, read %.0f (0x%x)!\n",
-                __func__, counterIndex, scorep_enopt_metric[ counterIndex ].enopt_id,
-                scorep_enopt_metric[ counterIndex ].value, energy, energy );
+                      __func__, counterIndex, scorep_enopt_metric[ counterIndex ].enopt_id,
+                      scorep_enopt_metric[ counterIndex ].value, energy, energy );
 
         enopt_start();
         return scorep_enopt_metric[ counterIndex ].value;
@@ -218,10 +219,12 @@ int32_t scorep_enopt_get_id( char * event_name )
 {
     SCOREP_Enopt_NameId *p;
 
-    debug_printf( "EnoptMP: %s: Searching for %s starting with %s\n", __func__, event_name, table->name );
+    debug_printf( "EnoptMP: %s: Searching for %s starting with %s\n",
+                  __func__, event_name, table->name );
     for( p = table; p->name != NULL; ++p )
     {
-        debug_printf( "EnoptMP: %s: Comparing %s with %s\n", __func__, p->name, event_name);
+        debug_printf( "EnoptMP: %s: Comparing %s with %s\n",
+                      __func__, p->name, event_name);
         if( strcmp(p->name, event_name ) == 0 )
         {
             debug_printf( "EnoptMP: %s: Found %s with id %d\n",

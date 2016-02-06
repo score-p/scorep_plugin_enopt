@@ -10,13 +10,12 @@
  *
  */
 
+
 #ifndef ENOPT_H_
 #define ENOPT_H_
 
 #include <stdbool.h>
 #include <stdlib.h>
-
-
 
 
 typedef struct SCOREP_Enopt_MetricInfo
