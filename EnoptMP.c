@@ -39,11 +39,13 @@ static int32_t num_metrics = 0;
 int32_t init( void )
 {
     debug_printf( "EnoptMP: %s: Entering\n", __func__ );
+
     if( init_enopt_wrapper() != 0 )
     {
         printf( "EnoptMP: %s: enopt_init: Unable to initialize enopt metric source\n", __func__ );
         return -1;
     }
+    enopt_start();
 
     debug_printf( "EnoptMP: %s: Exiting\n", __func__ );
     return 0;
@@ -53,16 +55,13 @@ int32_t init( void )
 int32_t add_counter( char* event_name )
 {
     /* ID generation has to be thread save */
-    int id;
-
     pthread_mutex_lock( &add_metric_mutex );
-    id = num_metrics;
+    int id = num_metrics;
     num_metrics++;
     pthread_mutex_unlock( &add_metric_mutex );
 
     debug_printf( "EnoptMP: %s(%s) = %d!\n", __func__, event_name, id );
     scorep_enopt_add_counter( event_name, id );
-    enopt_start();
 
     return id;
 }
@@ -115,7 +114,7 @@ uint64_t get_value( int32_t counterIndex )
 {
     if( omp_get_thread_num() == 0 )
     {
-        switch( enopt_stop( NULL ) )
+        switch( enopt_stop() )
         {
             case 0:
                 debug_printf( "EnoptMP: %s: enopt_stop: Successfully stopped ENOPT measurements!\n", __func__ );
@@ -168,6 +167,8 @@ uint64_t get_value( int32_t counterIndex )
 
 void fini( void )
 {
+    enopt_stop();
+
     if( finalize_enopt_wrapper() != 0 )
     {
        printf( "EnoptMP: %s: Unable to finalize enopt metric source\n", __func__ );
