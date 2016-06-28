@@ -112,6 +112,8 @@ SCOREP_Metric_Plugin_MetricProperties* get_event_info( char* event_name )
 
 uint64_t get_value( int32_t counterIndex )
 {
+    debug_printf( "EnoptMP: %s: Entering\n", __func__ );
+
     if( omp_get_thread_num() == 0 )
     {
         switch( enopt_stop() )
@@ -158,15 +160,18 @@ uint64_t get_value( int32_t counterIndex )
                       scorep_enopt_metric[ counterIndex ].value, energy, energy );
 
         enopt_start();
+        debug_printf( "EnoptMP: %s: Exiting\n", __func__ );
         return scorep_enopt_metric[ counterIndex ].value;
     }
 
+    debug_printf( "EnoptMP: %s: Exiting\n", __func__ );
     return 0;
 }
 
 
 void fini( void )
 {
+    debug_printf( "EnoptMP: %s: Entering\n", __func__ );
     enopt_stop();
 
     if( finalize_enopt_wrapper() != 0 )
@@ -176,6 +181,7 @@ void fini( void )
     }
 
     pthread_mutex_destroy( &add_metric_mutex );
+    debug_printf( "EnoptMP: %s: Exiting\n", __func__ );
 }
 
 
