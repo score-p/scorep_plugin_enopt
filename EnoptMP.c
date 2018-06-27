@@ -40,7 +40,7 @@ int32_t init( void )
 {
     debug_printf( "EnoptMP: %s: Entering\n", __func__ );
 
-    if( init_enopt_wrapper() != 0 )
+    if( enopt_init() != 0 )
     {
         printf( "EnoptMP: %s: enopt_init: Unable to initialize enopt metric source\n", __func__ );
         return -1;
@@ -174,7 +174,7 @@ void fini( void )
     debug_printf( "EnoptMP: %s: Entering\n", __func__ );
     enopt_stop();
 
-    if( finalize_enopt_wrapper() != 0 )
+    if( enopt_finalize() != 0 )
     {
        printf( "EnoptMP: %s: Unable to finalize enopt metric source\n", __func__ );
        abort();
